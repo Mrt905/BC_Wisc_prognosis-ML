@@ -1,34 +1,38 @@
 Breast cancer prognosis prediction using ML approach
 
 
-
 Dataset: 
-
 https://archive.ics.uci.edu/dataset/16/breast+cancer+wisconsin+prognostic
 
 
-
+Data preprocessing:
+The missing feature values were replaced using mean imputation and target labels encoded numerically using LabelEncoder. Features were standardized using StandardScaler to ensure zero mean and unit variance.
 
 
 Models: 
-
-K-nearest neighbor and Gaussian process classifier
-
+Supervised learning: K-nearest neighbor and Gaussian process classifier
 Unsupervised visualization: K-means + Kernel PCA for visualization
 
 
-
-The evaluation was performed using 10 runs of nested cross-validation with different random permutations of the dataset, ensuring robust performance estimates.
-
-
-
-KNN and GPC achieved similar performance across runs, with mean accuracies of approximately 74.6% and 75.7%, respectively. A Wilcoxon signed-rank test indicated that the difference between the models was not statistically significant (p > 0.05).
-
+Methodology:
+Hyperparameters
+KNN: k (1,3,5,7,9,11,15,21), metric (euclidean, manhattan)
+GPC: kernel (RBF, Matern, RationalQuadratic, DotProduct)
+K-means: number of clusters k selected using Elbow method and Sillhouette score
 
 
-For unsupervised learning, K-Means clustering achieved an accuracy of approximately 59.6% after optimal label matching. As expected, this is lower than supervised approaches, since clustering does not use class labels during training.
+Evaluation:
+The evaluation was performed using 10 runs of nested cross-validation (Inner CV: 5-fold StratifiedKFold inside GridSearchCV to select best hyperparameters; outer CV: 5-fold StratifiedKFold generalisation accuracy estimates) with different random permutations of the dataset to ensure robust performance estimates. Balanced accuracy was used as the scoring metric.
 
 
+Optimal Hyperparameters:
+KNN: optimal k values across the 10 runs is shown in the boxplot. Euclidean was consistenly optimal metric across all 10 runs.
+GPC: DotProduct was the consistently winning kernel across all 10 runs.
+K-means: k = 2 was determined using two methods: Elbow method and Sillhouette score
 
-Overall, the results suggest that both supervised models capture similar structures in the data, while unsupervised clustering provides only limited separation of the classes.
+
+GPC achieved better performance across runs, with mean accuracy of approximately 79% (KNN mean accuracy approximately 71%). A Wilcoxon signed-rank test and McNemar indicated that the difference between the models was statistically significant (p < 0.05). Randomness affects the conclusion in individual runs, however overall conclusion is that GPC is superior.
+KNN accuracy of 59.6% was computed.
+
+
 
